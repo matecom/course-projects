@@ -9,13 +9,17 @@ import UIKit
 
 class DetailVC: UIViewController {
     var selectedImage: String?
+    var numberOfPhotos: Int?
+    var photoNumber: Int?
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.largeTitleDisplayMode = .never
         if let imageToLoad = selectedImage {
             imageView.image = UIImage(named: imageToLoad)
         }
-        title = selectedImage
+        if(photoNumber != nil && numberOfPhotos != nil){
+            title = "Picture \(photoNumber!+1) of \(numberOfPhotos!)"
+        }
     }
     @IBOutlet var imageView: UIImageView!
     override func viewWillAppear(_ animated: Bool) {

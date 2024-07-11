@@ -22,6 +22,7 @@ class ViewController: UITableViewController {
         } catch {
             print("Error with file manager")
         }
+        pictures.sort()
         print(pictures)
         title = "Storm Viewer"
     }
@@ -30,14 +31,19 @@ class ViewController: UITableViewController {
     }
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Picture", for: indexPath)
-        var content = cell.defaultContentConfiguration()
-        content.text = pictures[indexPath.row]
-        cell.contentConfiguration = content
+        /// this code from course will be deprecated, but I need this to change style in storeboard
+        cell.textLabel?.text = pictures[indexPath.row]
+//        var content = cell.defaultContentConfiguration()
+//        cell.con
+//        content.text = pictures[indexPath.row]
+//        cell.contentConfiguration = content
         return cell
     }
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let detailVC = storyboard?.instantiateViewController(withIdentifier: "Detail") as? DetailVC {
             detailVC.selectedImage = pictures[indexPath.row]
+            detailVC.numberOfPhotos = pictures.count
+            detailVC.photoNumber = indexPath.row
             navigationController?.pushViewController(detailVC, animated: true)
         }
     }
