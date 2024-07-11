@@ -34,7 +34,6 @@ class ViewController: UITableViewController {
         /// this code from course will be deprecated, but I need this to change style in storeboard
         cell.textLabel?.text = pictures[indexPath.row]
 //        var content = cell.defaultContentConfiguration()
-//        cell.con
 //        content.text = pictures[indexPath.row]
 //        cell.contentConfiguration = content
         return cell
