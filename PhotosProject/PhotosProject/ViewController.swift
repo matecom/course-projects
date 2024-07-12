@@ -12,6 +12,7 @@ class ViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.navigationBar.prefersLargeTitles = true
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareTapped))
         let fileManager = FileManager.default
         let path = Bundle.main.resourcePath!
         do {
@@ -45,5 +46,10 @@ class ViewController: UITableViewController {
             detailVC.photoNumber = indexPath.row
             navigationController?.pushViewController(detailVC, animated: true)
         }
+    }
+    @objc func shareTapped() {
+        let viewController = UIActivityViewController(activityItems: ["Recomend app"], applicationActivities: [])
+        viewController.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
+        present(viewController, animated: true)
     }
 }
