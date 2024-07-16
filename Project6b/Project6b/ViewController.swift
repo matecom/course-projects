@@ -61,8 +61,17 @@ class ViewController: UIViewController {
         var previous: UILabel?
         
         for label in [label1, label2, label3, label4, label5] {
-            label.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
-            label.heightAnchor.constraint(equalToConstant: 88).isActive = true
+            //1. leadingAnchor and trailingAnchor
+//            label.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+//            label.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+            //2. using the safeAreaLayoutGuide
+            label.safeAreaLayoutGuide.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+            label.safeAreaLayoutGuide.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+            //3. making the height of your labels equal to 1/5th
+            label.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 1/5, constant: -10).isActive = true
+            
+//            label.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
+//            label.heightAnchor.constraint(equalToConstant: 88).isActive = true
             
             if let previous = previous {
                 label.topAnchor.constraint(equalTo: previous.bottomAnchor, constant: 10).isActive = true
