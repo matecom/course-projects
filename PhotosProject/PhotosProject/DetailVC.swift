@@ -11,6 +11,9 @@ class DetailVC: UIViewController {
     var selectedImage: String?
     var numberOfPhotos: Int?
     var photoNumber: Int?
+    
+    @IBOutlet var imageView: UIImageView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.largeTitleDisplayMode = .never
@@ -21,11 +24,12 @@ class DetailVC: UIViewController {
             title = "Picture \(photoNumber!+1) of \(numberOfPhotos!)"
         }
     }
-    @IBOutlet var imageView: UIImageView!
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.hidesBarsOnTap = true
     }
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         navigationController?.hidesBarsOnTap = false
