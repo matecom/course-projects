@@ -20,6 +20,9 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(showScore))
+        
         countries += ["estonia", "france", "germany", "ireland", "italy", "monaco", "nigeria", "poland", "russia", "spain", "uk", "us"]
         
         button1.layer.borderWidth = 1
@@ -71,5 +74,12 @@ class ViewController: UIViewController {
     func resetGame() {
         score = 0
         questionsAsked = 0
+    }
+    
+    @objc func showScore() {
+        let alertController = UIAlertController(title: "Score", message: "Your score is \(score)", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "Continue", style: .default))
+        alertController.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
+        present(alertController, animated: true)
     }
 }
