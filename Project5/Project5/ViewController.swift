@@ -59,26 +59,64 @@ class ViewController: UITableViewController {
 
     func submit(_ answer: String) {
         let lowerAnswer = answer.lowercased()
-        if isPossible(word: lowerAnswer) && isOriginal(word: lowerAnswer) && isReal(word: lowerAnswer) {
-            usedWords.insert(answer, at: 0)
-            
-            let indexPath = IndexPath(row: 0, section: 0)
-            tableView.insertRows(at: [indexPath], with: .automatic)
-            print(usedWords)
-        }
         
+        let errorTitle: String
+        let errorMessage: String
+        
+        if isPossible(word: answer) {
+            if isOriginal(word: answer) {
+                if isReal(word: answer) {
+                    insertWord(answer)
+                    return
+                } else {
+                    errorTitle = "Word not recognised"
+                    errorMessage = "You can't just make them up, you know!"
+                }
+            } else {
+                errorTitle = "Word used already"
+                errorMessage = "Be more original!"
+            }
+        } else {
+            guard let title = title?.lowercased() else { return }
+            errorTitle = "Word not possible"
+            errorMessage = "You can't spell that word from \(title)"
+        }
+        let ac = UIAlertController(title: errorTitle, message: errorMessage, preferredStyle: .alert)
+        ac.addAction(UIAlertAction(title: "OK", style: .default))
+        present(ac, animated: true)
+    }
+    
+    func insertWord(_ answer: String) {
+        usedWords.insert(answer, at: 0)
+        
+        let indexPath = IndexPath(row: 0, section: 0)
+        tableView.insertRows(at: [indexPath], with: .automatic)
     }
     
     func isPossible(word: String) -> Bool {
+        guard var tempWord = title?.lowercased() else { return false }
+
+        for letter in word {
+            if let position = tempWord.firstIndex(of: letter) {
+                tempWord.remove(at: position)
+            } else {
+                return false
+            }
+        }
+
         return true
     }
     
     func isOriginal(word: String) -> Bool {
-        return true
+        return !usedWords.contains(word)
     }
     
     func isReal(word: String) -> Bool {
-        return true
+        let checker = UITextChecker()
+        let range = NSRange(location: 0, length: word.utf16.count)
+        let misspelledRange = checker.rangeOfMisspelledWord(in: word, range: range, startingAt: 0, wrap: false, language: "en")
+
+        return misspelledRange.location == NSNotFound
     }
     
 }
