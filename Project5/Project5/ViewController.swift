@@ -15,6 +15,7 @@ class ViewController: UITableViewController {
         super.viewDidLoad()
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(promptForAnswer))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(startGameTapped))
         
         if let startWordsURL = Bundle.main.url(forResource: "start", withExtension: "txt") {
             if let startWords = try? String(contentsOf: startWordsURL){
@@ -60,27 +61,25 @@ class ViewController: UITableViewController {
     func submit(_ answer: String) {
         let lowerAnswer = answer.lowercased()
         
-        let errorTitle: String
-        let errorMessage: String
-        
-        if isPossible(word: answer) {
-            if isOriginal(word: answer) {
-                if isReal(word: answer) {
-                    insertWord(answer)
-                    return
-                } else {
-                    errorTitle = "Word not recognised"
-                    errorMessage = "You can't just make them up, you know!"
-                }
-            } else {
-                errorTitle = "Word used already"
-                errorMessage = "Be more original!"
-            }
-        } else {
+        switch lowerAnswer.isOk(chosenWord: title, usedWords: usedWords) {
+        case .notPossible:
             guard let title = title?.lowercased() else { return }
-            errorTitle = "Word not possible"
-            errorMessage = "You can't spell that word from \(title)"
+            showErrorMessage(errorTitle: "Word not possible", errorMessage: "You can't spell that word from \(title)")
+        case .notOriginal:
+            showErrorMessage(errorTitle: "Word used already", errorMessage: "Be more original!")
+        case .notReal:
+            showErrorMessage(errorTitle: "Word not recognised", errorMessage: "You can't just make them up, you know!")
+        case .tooShort:
+            showErrorMessage(errorTitle: "Word is too short", errorMessage: "You can write more!")
+        case .isSame:
+            showErrorMessage(errorTitle: "Word is the same", errorMessage: "Be more original!")
+        case .isOk:
+            insertWord(answer)
+            return
         }
+    }
+    
+    func showErrorMessage(errorTitle: String, errorMessage: String) {
         let ac = UIAlertController(title: errorTitle, message: errorMessage, preferredStyle: .alert)
         ac.addAction(UIAlertAction(title: "OK", style: .default))
         present(ac, animated: true)
@@ -93,31 +92,8 @@ class ViewController: UITableViewController {
         tableView.insertRows(at: [indexPath], with: .automatic)
     }
     
-    func isPossible(word: String) -> Bool {
-        guard var tempWord = title?.lowercased() else { return false }
-
-        for letter in word {
-            if let position = tempWord.firstIndex(of: letter) {
-                tempWord.remove(at: position)
-            } else {
-                return false
-            }
-        }
-
-        return true
+    @objc func startGameTapped(){
+        startGame()
     }
-    
-    func isOriginal(word: String) -> Bool {
-        return !usedWords.contains(word)
-    }
-    
-    func isReal(word: String) -> Bool {
-        let checker = UITextChecker()
-        let range = NSRange(location: 0, length: word.utf16.count)
-        let misspelledRange = checker.rangeOfMisspelledWord(in: word, range: range, startingAt: 0, wrap: false, language: "en")
-
-        return misspelledRange.location == NSNotFound
-    }
-    
 }
 
