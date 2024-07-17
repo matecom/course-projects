@@ -72,10 +72,6 @@ class ViewController: UIViewController {
         
         let buttonsView = UIView()
         buttonsView.translatesAutoresizingMaskIntoConstraints = false
-        
-        buttonsView.layer.borderColor = UIColor.lightGray.cgColor
-        buttonsView.layer.borderWidth = 2.0
-        
         view.addSubview(buttonsView)
         
         NSLayoutConstraint.activate([
@@ -123,7 +119,6 @@ class ViewController: UIViewController {
                 letterButton.frame = frame
                 
                 letterButton.addTarget(self, action: #selector(letterTapped), for: .touchUpInside)
-                
                 // add it to the buttons view
                 buttonsView.addSubview(letterButton)
 
@@ -199,17 +194,12 @@ class ViewController: UIViewController {
 
             currentAnswer.text = ""
             score += 1
-            
-            if letterButtons.filter({button in !button.isHidden}).count == 0 {
+
+            if score % 7 == 0 {
                 let ac = UIAlertController(title: "Well done!", message: "Are you ready for the next level?", preferredStyle: .alert)
                 ac.addAction(UIAlertAction(title: "Let's go!", style: .default, handler: levelUp))
                 present(ac, animated: true)
             }
-        } else {
-            let ac = UIAlertController(title: "Wrong!", message: "This word doesn't exist", preferredStyle: .alert)
-            ac.addAction(UIAlertAction(title: "Ok", style: .default))
-            present(ac, animated: true)
-            score -= 1
         }
     }
 
