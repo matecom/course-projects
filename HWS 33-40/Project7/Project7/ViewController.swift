@@ -10,12 +10,17 @@ import UIKit
 class ViewController: UITableViewController {
     
     var petitions = [Petition]()
+    var petitionsJson = [Petition]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         let urlString: String
-
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Credits", style: .plain, target: self, action: #selector(showCredit))
+        
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Filtr", style: .plain, target: self, action: #selector(setFilter))
+        
         if navigationController?.tabBarItem.tag == 0 {
             urlString = "https://www.hackingwithswift.com/samples/petitions-1.json"
         } else {
@@ -35,8 +40,8 @@ class ViewController: UITableViewController {
         let decoder = JSONDecoder()
 
         if let jsonPetitions = try? decoder.decode(Petitions.self, from: json) {
-            petitions = jsonPetitions.results
-            tableView.reloadData()
+            petitionsJson = jsonPetitions.results
+            filtr("")
         }
     }
     
@@ -62,6 +67,35 @@ class ViewController: UITableViewController {
         let vc = DetailViewController()
         vc.detailItem = petitions[indexPath.row]
         navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    @objc func showCredit(){
+        let ac = UIAlertController(title: "Credit", message: "Data comes from the We The People API of the Whitehouse", preferredStyle: .alert)
+        let submitAction = UIAlertAction(title: "Ok", style: .default)
+        ac.addAction(submitAction)
+        present(ac, animated: true)
+    }
+    
+    @objc func setFilter(){
+        let ac = UIAlertController(title: "Enter filter", message: nil, preferredStyle: .alert)
+        ac.addTextField()
+        
+        let submitAction = UIAlertAction(title: "Submit", style: .default) { [weak self, weak ac] action in
+            guard let filter = ac?.textFields?[0].text else { return }
+            self?.filtr(filter)
+        }
+        ac.addAction(submitAction)
+        present(ac, animated: true)
+    }
+    
+    func filtr(_ filter: String){
+        if filter != "" {
+            petitions = petitionsJson.filter { petition in petition.title.contains(filter)}
+        } else {
+            petitions = petitionsJson
+        }
+        
+        tableView.reloadData()
     }
 }
 
