@@ -75,7 +75,6 @@ class ViewController: UITableViewController {
             showErrorMessage(errorTitle: "Word is the same", errorMessage: "Be more original!")
         case .isOk:
             insertWord(answer)
-            return
         }
     }
     
