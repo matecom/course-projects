@@ -22,6 +22,7 @@ class ViewController: UITableViewController, WKNavigationDelegate {
         cell.textLabel?.text =  websites[indexPath.row]
         return cell
     }
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         initialBrowser(url: websites[indexPath.row])
     }
@@ -55,12 +56,12 @@ class ViewController: UITableViewController, WKNavigationDelegate {
         webView.allowsBackForwardNavigationGestures = true
     }
     
-    func initialBrowser(url: String){
+    func initialBrowser(url: String) {
         configBrowser()
         openPage(url: url)
     }
 
-    @objc func openTapped(){
+    @objc func openTapped() {
         let ac = UIAlertController(title: "Open page...", message: nil, preferredStyle: .actionSheet)
         for website in websites {
             ac.addAction(UIAlertAction(title: website, style: .default, handler: openPage))
@@ -70,12 +71,12 @@ class ViewController: UITableViewController, WKNavigationDelegate {
         present(ac, animated: true)
     }
     
-    func openPage(action: UIAlertAction){
+    func openPage(action: UIAlertAction) {
         guard let actionTitle = action.title else { return }
         openPage(url: actionTitle)
     }
     
-    func openPage(url: String){
+    func openPage(url: String) {
         guard let url = URL(string: "https://" + url) else { return }
         webView.load(URLRequest(url: url))
     }
