@@ -14,6 +14,13 @@ class ViewController: UITableViewController {
         super.viewDidLoad()
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareTapped))
+        performSelector(inBackground: #selector(loadImages), with: nil)
+        title = "Storm Viewer"
+    }
+    
+    @objc func loadImages() {
+        var pictures: [String] = []
+        
         let fileManager = FileManager.default
         let path = Bundle.main.resourcePath!
         do {
@@ -24,9 +31,10 @@ class ViewController: UITableViewController {
         } catch {
             print("Error with file manager")
         }
-        pictures.sort()
-        print(pictures)
-        title = "Storm Viewer"
+        self.pictures = pictures
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -37,9 +45,9 @@ class ViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Picture", for: indexPath)
         /// this code from course will be deprecated, but I need this to change style in storeboard
         cell.textLabel?.text = pictures[indexPath.row]
-//        var content = cell.defaultContentConfiguration()
-//        content.text = pictures[indexPath.row]
-//        cell.contentConfiguration = content
+        //        var content = cell.defaultContentConfiguration()
+        //        content.text = pictures[indexPath.row]
+        //        cell.contentConfiguration = content
         return cell
     }
     

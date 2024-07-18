@@ -11,7 +11,7 @@ class ViewController: UITableViewController {
     
     var petitions = [Petition]()
     var petitionsJson = [Petition]()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -38,7 +38,7 @@ class ViewController: UITableViewController {
     
     func parse(json: Data) {
         let decoder = JSONDecoder()
-
+        
         if let jsonPetitions = try? decoder.decode(Petitions.self, from: json) {
             petitionsJson = jsonPetitions.results
             filtr("")
@@ -62,7 +62,7 @@ class ViewController: UITableViewController {
         cell.detailTextLabel?.text = petition.body
         return cell
     }
-
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let vc = DetailViewController()
         vc.detailItem = petitions[indexPath.row]
@@ -82,7 +82,9 @@ class ViewController: UITableViewController {
         
         let submitAction = UIAlertAction(title: "Submit", style: .default) { [weak self, weak ac] action in
             guard let filter = ac?.textFields?[0].text else { return }
-            self?.filtr(filter)
+            DispatchQueue.global(qos: .userInitiated).async {
+                self?.filtr(filter)
+            }
         }
         ac.addAction(submitAction)
         present(ac, animated: true)
@@ -94,8 +96,9 @@ class ViewController: UITableViewController {
         } else {
             petitions = petitionsJson
         }
-        
-        tableView.reloadData()
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
     }
 }
 
