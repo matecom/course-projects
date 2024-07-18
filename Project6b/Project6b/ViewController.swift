@@ -68,7 +68,7 @@ class ViewController: UIViewController {
             label.safeAreaLayoutGuide.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
             label.safeAreaLayoutGuide.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
             //3. making the height of your labels equal to 1/5th
-            label.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 1/5, constant: -10).isActive = true
+            label.heightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.heightAnchor, multiplier: 0.2, constant: -10).isActive = true
             
 //            label.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
 //            label.heightAnchor.constraint(equalToConstant: 88).isActive = true
