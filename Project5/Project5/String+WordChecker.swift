@@ -1,5 +1,5 @@
 //
-//  String+Ext.swift
+//  String+WordChecker.swift
 //  Project5
 //
 //  Created by Mateusz Bereta on 16/07/2024.
