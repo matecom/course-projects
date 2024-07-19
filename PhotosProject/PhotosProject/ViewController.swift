@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ViewController: UITableViewController {
+class ViewController: UICollectionViewController {
     var pictures: [String] = []
     
     override func viewDidLoad() {
@@ -29,28 +29,28 @@ class ViewController: UITableViewController {
         title = "Storm Viewer"
     }
     
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return pictures.count
     }
     
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Picture", for: indexPath)
-        /// this code from course will be deprecated, but I need this to change style in storeboard
-        cell.textLabel?.text = pictures[indexPath.row]
-//        var content = cell.defaultContentConfiguration()
-//        content.text = pictures[indexPath.row]
-//        cell.contentConfiguration = content
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Picture", for: indexPath) as? PhotoCell else {
+            fatalError("Unable to dequeue PhotoCell.")
+        }
+        cell.labelName.text = pictures[indexPath.item]
+        cell.imageView.image = UIImage(named: pictures[indexPath.item])
         return cell
     }
     
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if let detailVC = storyboard?.instantiateViewController(withIdentifier: "Detail") as? DetailVC {
-            detailVC.selectedImage = pictures[indexPath.row]
+            detailVC.selectedImage = pictures[indexPath.item]
             detailVC.numberOfPhotos = pictures.count
-            detailVC.photoNumber = indexPath.row
+            detailVC.photoNumber = indexPath.item
             navigationController?.pushViewController(detailVC, animated: true)
         }
     }
+    
     @objc func shareTapped() {
         let viewController = UIActivityViewController(activityItems: ["Recomend app"], applicationActivities: [])
         viewController.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
