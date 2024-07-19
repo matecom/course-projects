@@ -16,13 +16,19 @@ class DetailVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        let defaults = UserDefaults.standard
         navigationItem.largeTitleDisplayMode = .never
         if let imageToLoad = selectedImage {
             imageView.image = UIImage(named: imageToLoad)
+            var counter = defaults.object(forKey: imageToLoad) as? Int ?? 0
+            counter += 1
+            defaults.set(counter, forKey: imageToLoad)
+            print("This image was displayed \(counter) times")
         }
         if(photoNumber != nil && numberOfPhotos != nil){
             title = "Picture \(photoNumber!+1) of \(numberOfPhotos!)"
         }
+
     }
     
     override func viewWillAppear(_ animated: Bool) {
