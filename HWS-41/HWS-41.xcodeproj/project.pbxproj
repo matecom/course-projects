@@ -13,6 +13,7 @@
 		614242BA2C4A93CE00E7491A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 614242B92C4A93CE00E7491A /* Assets.xcassets */; };
 		614242BD2C4A93CE00E7491A /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 614242BC2C4A93CE00E7491A /* Base */; };
 		614242C52C4A997000E7491A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 614242C42C4A997000E7491A /* Main.storyboard */; };
+		61EC3FDE2C4E3AD100C5FB64 /* start.txt in Resources */ = {isa = PBXBuildFile; fileRef = 61EC3FDD2C4E3AD100C5FB64 /* start.txt */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		614242BC2C4A93CE00E7491A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		614242BE2C4A93CE00E7491A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		614242C42C4A997000E7491A /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		61EC3FDD2C4E3AD100C5FB64 /* start.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = start.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +65,7 @@
 				614242B92C4A93CE00E7491A /* Assets.xcassets */,
 				614242BB2C4A93CE00E7491A /* LaunchScreen.storyboard */,
 				614242BE2C4A93CE00E7491A /* Info.plist */,
+				61EC3FDD2C4E3AD100C5FB64 /* start.txt */,
 			);
 			path = "HWS-41";
 			sourceTree = "<group>";
@@ -126,6 +129,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				614242C52C4A997000E7491A /* Main.storyboard in Resources */,
+				61EC3FDE2C4E3AD100C5FB64 /* start.txt in Resources */,
 				614242BA2C4A93CE00E7491A /* Assets.xcassets in Resources */,
 				614242BD2C4A93CE00E7491A /* Base in Resources */,
 			);
