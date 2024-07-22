@@ -81,8 +81,7 @@ class ViewController: UICollectionViewController, UIImagePickerControllerDelegat
         let picker = UIImagePickerController()
         picker.allowsEditing = true
         picker.delegate = self
-        print(UIImagePickerController.isSourceTypeAvailable(.camera))
-        if(!UIImagePickerController.isSourceTypeAvailable(.camera)){
+        if !UIImagePickerController.isSourceTypeAvailable(.camera) {
             let ac = UIAlertController(title: "You don't have camera", message: nil, preferredStyle: .alert)
             ac.addAction(UIAlertAction(title: "Ok", style: .cancel))
             present(ac,animated: true)
