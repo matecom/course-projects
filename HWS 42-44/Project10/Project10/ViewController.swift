@@ -85,7 +85,6 @@ class ViewController: UICollectionViewController, UIImagePickerControllerDelegat
             let ac = UIAlertController(title: "You don't have camera", message: nil, preferredStyle: .alert)
             ac.addAction(UIAlertAction(title: "Ok", style: .cancel))
             present(ac,animated: true)
-            return
         } else {
             picker.sourceType = .camera
             present(picker, animated: true)
