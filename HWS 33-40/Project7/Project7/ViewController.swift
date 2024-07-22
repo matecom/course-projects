@@ -41,7 +41,7 @@ class ViewController: UITableViewController {
 
         if let jsonPetitions = try? decoder.decode(Petitions.self, from: json) {
             petitionsJson = jsonPetitions.results
-            filtr("")
+            filter("")
         }
     }
     
@@ -82,19 +82,18 @@ class ViewController: UITableViewController {
         
         let submitAction = UIAlertAction(title: "Submit", style: .default) { [weak self, weak ac] action in
             guard let filter = ac?.textFields?[0].text else { return }
-            self?.filtr(filter)
+            self?.filter(filter)
         }
         ac.addAction(submitAction)
         present(ac, animated: true)
     }
     
-    func filtr(_ filter: String){
-        if filter != "" {
-            petitions = petitionsJson.filter { petition in petition.title.contains(filter)}
+    func filter(_ filterString: String){
+        if !filterString.isEmpty {
+            petitions = petitionsJson.filter { $0.title.contains(filterString) }
         } else {
             petitions = petitionsJson
         }
-        
         tableView.reloadData()
     }
 }
