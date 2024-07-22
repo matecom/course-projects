@@ -26,14 +26,17 @@ class ViewController: UITableViewController {
         } else {
             urlString = "https://www.hackingwithswift.com/samples/petitions-2.json"
         }
-        
-        if let url = URL(string: urlString) {
-            if let data = try? Data(contentsOf: url) {
-                parse(json: data)
-                return
+        DispatchQueue.global(qos: .userInitiated).async {
+            if let url = URL(string: urlString) {
+                if let data = try? Data(contentsOf: url) {
+                    self.parse(json: data)
+                    return
+                }
+            }
+            DispatchQueue.main.async {
+                self.showError()
             }
         }
-        showError()
     }
     
     func parse(json: Data) {
@@ -41,7 +44,7 @@ class ViewController: UITableViewController {
         
         if let jsonPetitions = try? decoder.decode(Petitions.self, from: json) {
             petitionsJson = jsonPetitions.results
-            filtr("")
+            filter("")
         }
     }
     
@@ -69,30 +72,30 @@ class ViewController: UITableViewController {
         navigationController?.pushViewController(vc, animated: true)
     }
     
-    @objc func showCredit(){
+    @objc func showCredit() {
         let ac = UIAlertController(title: "Credit", message: "Data comes from the We The People API of the Whitehouse", preferredStyle: .alert)
         let submitAction = UIAlertAction(title: "Ok", style: .default)
         ac.addAction(submitAction)
         present(ac, animated: true)
     }
     
-    @objc func setFilter(){
+    @objc func setFilter() {
         let ac = UIAlertController(title: "Enter filter", message: nil, preferredStyle: .alert)
         ac.addTextField()
         
         let submitAction = UIAlertAction(title: "Submit", style: .default) { [weak self, weak ac] action in
             guard let filter = ac?.textFields?[0].text else { return }
             DispatchQueue.global(qos: .userInitiated).async {
-                self?.filtr(filter)
+                self?.filter(filter)
             }
         }
         ac.addAction(submitAction)
         present(ac, animated: true)
     }
     
-    func filtr(_ filter: String){
-        if filter != "" {
-            petitions = petitionsJson.filter { petition in petition.title.contains(filter)}
+    func filter(_ filterString: String) {
+        if !filterString.isEmpty {
+            petitions = petitionsJson.filter { $0.title.contains(filterString) }
         } else {
             petitions = petitionsJson
         }
