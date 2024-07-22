@@ -69,14 +69,14 @@ class ViewController: UITableViewController {
         navigationController?.pushViewController(vc, animated: true)
     }
     
-    @objc func showCredit(){
+    @objc func showCredit() {
         let ac = UIAlertController(title: "Credit", message: "Data comes from the We The People API of the Whitehouse", preferredStyle: .alert)
         let submitAction = UIAlertAction(title: "Ok", style: .default)
         ac.addAction(submitAction)
         present(ac, animated: true)
     }
     
-    @objc func setFilter(){
+    @objc func setFilter() {
         let ac = UIAlertController(title: "Enter filter", message: nil, preferredStyle: .alert)
         ac.addTextField()
         
@@ -88,7 +88,7 @@ class ViewController: UITableViewController {
         present(ac, animated: true)
     }
     
-    func filter(_ filterString: String){
+    func filter(_ filterString: String) {
         if !filterString.isEmpty {
             petitions = petitionsJson.filter { $0.title.contains(filterString) }
         } else {
