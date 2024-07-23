@@ -26,19 +26,22 @@ class ViewController: UITableViewController {
         } else {
             urlString = "https://www.hackingwithswift.com/samples/petitions-2.json"
         }
-        
-        if let url = URL(string: urlString) {
-            if let data = try? Data(contentsOf: url) {
-                parse(json: data)
-                return
+        DispatchQueue.global(qos: .userInitiated).async {
+            if let url = URL(string: urlString) {
+                if let data = try? Data(contentsOf: url) {
+                    self.parse(json: data)
+                    return
+                }
+            }
+            DispatchQueue.main.async {
+                self.showError()
             }
         }
-        showError()
     }
     
     func parse(json: Data) {
         let decoder = JSONDecoder()
-
+        
         if let jsonPetitions = try? decoder.decode(Petitions.self, from: json) {
             petitionsJson = jsonPetitions.results
             filter("")
@@ -62,7 +65,7 @@ class ViewController: UITableViewController {
         cell.detailTextLabel?.text = petition.body
         return cell
     }
-
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let vc = DetailViewController()
         vc.detailItem = petitions[indexPath.row]
@@ -82,7 +85,9 @@ class ViewController: UITableViewController {
         
         let submitAction = UIAlertAction(title: "Submit", style: .default) { [weak self, weak ac] action in
             guard let filter = ac?.textFields?[0].text else { return }
-            self?.filter(filter)
+            DispatchQueue.global(qos: .userInitiated).async {
+                self?.filter(filter)
+            }
         }
         ac.addAction(submitAction)
         present(ac, animated: true)
@@ -94,7 +99,8 @@ class ViewController: UITableViewController {
         } else {
             petitions = petitionsJson
         }
-        tableView.reloadData()
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
     }
 }
-
