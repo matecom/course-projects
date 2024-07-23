@@ -11,7 +11,7 @@ class ViewController: UITableViewController {
     
     var petitions = [Petition]()
     var petitionsJson = [Petition]()
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -104,4 +104,3 @@ class ViewController: UITableViewController {
         }
     }
 }
-
