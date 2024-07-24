@@ -139,7 +139,7 @@ class ViewController: UIViewController {
     
     @objc func textFieldDidChange(_ textField: UITextField) {
         submitButton.isEnabled = false
-        if(textField.text?.count == 1) {
+        if textField.text?.count == 1 {
             submitButton.isEnabled = true
         }
     }
