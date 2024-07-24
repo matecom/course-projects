@@ -14,6 +14,13 @@ class ViewController: UICollectionViewController {
         super.viewDidLoad()
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareTapped))
+        performSelector(inBackground: #selector(loadImages), with: nil)
+        title = "Storm Viewer"
+    }
+    
+    @objc func loadImages() {
+        var pictures: [String] = []
+        
         let fileManager = FileManager.default
         let path = Bundle.main.resourcePath!
         do {
@@ -24,9 +31,10 @@ class ViewController: UICollectionViewController {
         } catch {
             print("Error with file manager")
         }
-        pictures.sort()
-        print(pictures)
-        title = "Storm Viewer"
+        self.pictures = pictures
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
