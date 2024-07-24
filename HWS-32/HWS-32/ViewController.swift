@@ -10,6 +10,7 @@ import UIKit
 class ViewController: UITableViewController {
     
     var shoppingList: [String] = []
+    var alert: UIAlertController?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,16 +42,17 @@ class ViewController: UITableViewController {
     }
     
     @objc func promptAddItem() {
-        let ac = UIAlertController(title: "Add item", message: nil, preferredStyle: .alert)
-        ac.addTextField()
-        
-        let submitAction = UIAlertAction(title: "Submit", style: .default) { [weak self, weak ac] action in
-            guard let item = ac?.textFields?[0].text else { return }
+        alert = UIAlertController(title: "Add item", message: nil, preferredStyle: .alert)
+        alert!.addTextField() {[weak self] in $0.addTarget(self, action: #selector(self?.alertTextFieldDidChange), for: .editingChanged) }
+        let submitAction = UIAlertAction(title: "Submit", style: .default) { [weak self, weak alert] action in
+            guard let item = alert?.textFields?[0].text else { return }
             self?.addItem(item)
         }
         
-        ac.addAction(submitAction)
-        present(ac, animated: true)
+        submitAction.isEnabled = false
+        alert!.addAction(submitAction)
+        alert!.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        present(alert!, animated: true)
     }
     
     func promptClearList() {
@@ -81,6 +83,11 @@ class ViewController: UITableViewController {
         optionMenu.addAction(shareAction)
         optionMenu.addAction(cancelAction)
         
+        if shoppingList.isEmpty {
+            clearAction.isEnabled = false
+            shareAction.isEnabled = false
+        }
+        
         self.present(optionMenu, animated: true, completion: nil)
     }
     
@@ -94,6 +101,10 @@ class ViewController: UITableViewController {
         shoppingList.insert(item, at: 0)
         let indexPath = IndexPath(row: 0, section: 0)
         tableView.insertRows(at: [indexPath], with: .automatic)
+    }
+    
+    @objc func alertTextFieldDidChange(_ sender: UITextField) {
+        alert?.actions[0].isEnabled = sender.text!.trimmingCharacters(in: .whitespacesAndNewlines).count > 0
     }
 }
 
