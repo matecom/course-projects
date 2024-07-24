@@ -19,6 +19,8 @@
 		618064D52C4FC44C009A99B5 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 618064D42C4FC44C009A99B5 /* Base */; };
 		618064D92C4FC44C009A99B5 /* Extension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 618064CA2C4FC44C009A99B5 /* Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		618064DF2C4FCD30009A99B5 /* Action.js in Resources */ = {isa = PBXBuildFile; fileRef = 618064DE2C4FCD30009A99B5 /* Action.js */; };
+		61D37F432C50E8720021DE93 /* Script.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61D37F422C50E8720021DE93 /* Script.swift */; };
+		61D37F452C5106B70021DE93 /* ScriptsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61D37F442C5106B70021DE93 /* ScriptsTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,6 +63,8 @@
 		618064D42C4FC44C009A99B5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		618064D62C4FC44C009A99B5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		618064DE2C4FCD30009A99B5 /* Action.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = Action.js; sourceTree = "<group>"; };
+		61D37F422C50E8720021DE93 /* Script.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Script.swift; sourceTree = "<group>"; };
+		61D37F442C5106B70021DE93 /* ScriptsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScriptsTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -131,6 +135,8 @@
 				618064D32C4FC44C009A99B5 /* MainInterface.storyboard */,
 				618064D62C4FC44C009A99B5 /* Info.plist */,
 				618064DE2C4FCD30009A99B5 /* Action.js */,
+				61D37F422C50E8720021DE93 /* Script.swift */,
+				61D37F442C5106B70021DE93 /* ScriptsTableViewController.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -249,7 +255,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				61D37F432C50E8720021DE93 /* Script.swift in Sources */,
 				618064D22C4FC44C009A99B5 /* ActionViewController.swift in Sources */,
+				61D37F452C5106B70021DE93 /* ScriptsTableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
