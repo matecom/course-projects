@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import UserNotifications
 
 class ViewController: UIViewController {
     @IBOutlet var button1: UIButton!
@@ -17,6 +18,7 @@ class ViewController: UIViewController {
     var correctAnswer = 0
     var questionsAsked = 0
     let maxQuestions = 10
+    let notificationID = "alarmGame"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,6 +36,7 @@ class ViewController: UIViewController {
         button3.layer.borderColor = UIColor.lightGray.cgColor
         
         askQuestion()
+        registerLocalNotification()
     }
     
     func askQuestion(_: UIAlertAction! = nil) {
@@ -81,5 +84,33 @@ class ViewController: UIViewController {
         alertController.addAction(UIAlertAction(title: "Continue", style: .default))
         alertController.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
         present(alertController, animated: true)
+    }
+    
+    func registerLocalNotification() {
+        let center = UNUserNotificationCenter.current()
+        
+        center.requestAuthorization(options: [.alert, .badge, .sound]) {[weak self] (granted, error) in
+            if granted {
+                print("Yay")
+                self?.scheduleLocalNotification()
+            }
+        }
+    }
+    
+    func scheduleLocalNotification() {
+        let center = UNUserNotificationCenter.current()
+        
+        center.removeAllPendingNotificationRequests()
+        
+        let content = UNMutableNotificationContent()
+        content.title = "Come back and play"
+        content.body = "This is time to play the game."
+        content.categoryIdentifier = notificationID
+        content.sound = UNNotificationSound.default
+        
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 86400, repeats: false)
+        print(trigger)
+        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+        center.add(request)
     }
 }
