@@ -17,7 +17,7 @@ class NoteViewController: UIViewController, UITextViewDelegate {
     var notes: [Note] = []
     var barButtons = [UIBarButtonItem]()
     
-    func emptyNoteConfig(){
+    func emptyNoteConfig() {
         for textView in [titleTextView, contentTextView] {
             textView?.text = nil
             textView?.setColor()
@@ -35,7 +35,7 @@ class NoteViewController: UIViewController, UITextViewDelegate {
         barButtons.append(UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil))
         barButtons.append(UIBarButtonItem(image: UIImage(systemName: "square.and.arrow.down"), style: .plain, target: self, action: #selector(addNotes)))
         
-        self.toolbarItems = barButtons
+        toolbarItems = barButtons
     }
     
     override func viewDidLoad() {
@@ -55,9 +55,9 @@ class NoteViewController: UIViewController, UITextViewDelegate {
         titleTextView.delegate = self
         contentTextView.delegate = self
         
-        self.navigationController?.isToolbarHidden = false
+        navigationController?.isToolbarHidden = false
         
-        self.navigationController?.toolbar.backgroundColor = UIColor.clear
+        navigationController?.toolbar.backgroundColor = UIColor.clear
         
         if noteID == nil {
             emptyNoteConfig()

@@ -34,7 +34,7 @@ class ListNotesViewController: UITableViewController {
         items.append(UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil))
         items.append(UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addNotes)))
 
-        self.toolbarItems = items
+        toolbarItems = items
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -66,7 +66,7 @@ class ListNotesViewController: UITableViewController {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let vc = storyboard.instantiateViewController(withIdentifier: "NoteVCID") as! NoteViewController
         vc.noteID = noteID
-        self.navigationController?.pushViewController(vc, animated: true)
+        navigationController?.pushViewController(vc, animated: true)
     }
 }
 
