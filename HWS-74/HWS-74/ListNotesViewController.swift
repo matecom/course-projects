@@ -21,8 +21,7 @@ class ListNotesViewController: UITableViewController {
         notes = Note.load(data: defaults.object(forKey: notesKey) as? Data)
                 
         navigationController?.navigationBar.prefersLargeTitles = true
-        
-        self.navigationController?.isToolbarHidden = false
+        navigationController?.isToolbarHidden = false
 
         var items = [UIBarButtonItem]()
         
