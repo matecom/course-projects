@@ -40,7 +40,9 @@ class NoteViewController: UIViewController, UITextViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationController?.navigationBar.prefersLargeTitles = false
+        
+        navigationItem.largeTitleDisplayMode = .never
+        
         notes = Note.load(data: defaults.object(forKey: notesKey) as? Data)
         
         buttonConfig()
