@@ -10,6 +10,7 @@ import UIKit
 class ListNotesViewController: UITableViewController {
     
     var notes: [Note] = []
+    let noteCounter = UIBarButtonItem(title: "\(0) notes", style: .plain, target: nil, action: nil)
     
     let defaults = UserDefaults.standard
 
@@ -25,7 +26,7 @@ class ListNotesViewController: UITableViewController {
 
         var items = [UIBarButtonItem]()
         
-        var noteCounter = UIBarButtonItem(title: "\(notes.count) notes", style: .plain, target: nil, action: nil)
+        noteCounter.title = "\(notes.count) notes"
         noteCounter.isEnabled = false
         noteCounter.tintColor = UIColor.black
         
@@ -39,6 +40,7 @@ class ListNotesViewController: UITableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         notes = Note.load(data: defaults.object(forKey: notesKey) as? Data)
+        noteCounter.title = "\(notes.count) notes"
         tableView.reloadData()
     }
     
