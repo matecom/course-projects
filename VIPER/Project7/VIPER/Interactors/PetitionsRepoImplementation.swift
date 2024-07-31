@@ -7,16 +7,13 @@
 
 import Foundation
 
-public enum ApiError: Int, Error {
-    case recieveNilResponse = 0,
-    recieveErrorHttpStatus,
-    recieveNilBody,
-    failedParse
+protocol PetitionsRepoProtocol {
+    func fetchPetitionsList(completion: @escaping ([Petition]?) -> Void)
 }
 
-final class PetitionsRepoImplementation: PetitionsRepo {
+class PetitionsRepo: PetitionsRepoProtocol {
     
-    func fetchPetitionsList(completion: @escaping ([Petition]?, ApiError?) -> Void) {
+    func fetchPetitionsList(completion: @escaping ([Petition]?) -> Void) {
 //        if navigationController?.tabBarItem.tag == 0 {
 //            urlString = "https://www.hackingwithswift.com/samples/petitions-1.json"
 //        } else {
@@ -27,15 +24,15 @@ final class PetitionsRepoImplementation: PetitionsRepo {
             if let url = URL(string: urlString) {
                 if let data = try? Data(contentsOf: url) {
                     guard let petitions = self.parse(json: data) else {
-                        completion(nil, ApiError.failedParse)
+                        completion(nil)
                         return
                     }
-                    completion(petitions, nil)
+                    completion(petitions)
                 } else {
-                    completion(nil, ApiError.recieveNilBody)
+                    completion(nil)
                 }
             } else {
-                completion(nil, ApiError.recieveNilBody)
+                completion(nil)
             }
         }
     }

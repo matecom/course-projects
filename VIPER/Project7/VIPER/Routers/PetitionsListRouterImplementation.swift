@@ -8,17 +8,20 @@
 import Foundation
 import UIKit
 
-class PetitionsListRouterImplementation: PetitionsListRouter {    
-    var viewController: UIViewController?
+protocol PetitionsListRouterProtocol {
+    func presentDetails(parentViewController: UIViewController, petition: Petition)
+}
+
+class PetitionsListRouter: PetitionsListRouterProtocol {
+    private let presenter: PetitionsListPresenter
     
-    func createWindow(windowScene: UIWindowScene) -> UIWindow {
-        let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-        //let vc = storyboard.instantiateViewController(identifier: "PetitionsListVCID") // ViewController from storyboard
-        let vc = UINavigationController(rootViewController: viewController!) // ViewController from router with navigationController
-        let window = UIWindow(frame: windowScene.coordinateSpace.bounds)
-        window.windowScene = windowScene
-        window.rootViewController = vc
-        window.makeKeyAndVisible()
-        return window
+    init(presenter: PetitionsListPresenter) {
+        self.presenter = presenter
+    }
+    
+    func presentDetails(parentViewController: UIViewController, petition: Petition) {
+        let petitionVC = PetitionDetailsViewController()
+        petitionVC.setPetition(petition)
+        parentViewController.navigationController?.pushViewController(petitionVC, animated: true)
     }
 }

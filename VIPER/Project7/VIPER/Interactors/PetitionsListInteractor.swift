@@ -7,23 +7,41 @@
 
 import Foundation
 
-final class PetitionsListInteractor: PetitionsListInteractorInput {
+protocol PetitionsListInteractorProtocol {
+    func fetchPetitionsList()
+    func filter(_ filter: String)
+}
+
+class PetitionsListInteractor {
+    private let repo: PetitionsRepoProtocol
+    private let presenter: PetitionsListInteractorPresenterProtocol
+    private var petitions: [Petition] = []
     
-    var output: PetitionsListInteractorOutput?
+    init(presenter: PetitionsListInteractorPresenterProtocol) {
+        self.repo = PetitionsRepo()
+        self.presenter = presenter
+    }
+}
 
-    private let repo: PetitionsRepo
-
-    init(repo: PetitionsRepo) {
-        self.repo = repo
+extension PetitionsListInteractor: PetitionsListInteractorProtocol {
+    func fetchPetitionsList() {
+        repo.fetchPetitionsList { petitions in
+            if let petitions = petitions {
+                self.presenter.fetchPetitionsSuccess(petitionsList: petitions)
+                self.petitions = petitions
+            } else {
+                self.presenter.fetchPetitionsFailure()
+            }
+        }
     }
     
-    func fetchPetitionsList() {
-        repo.fetchPetitionsList { petitions, error in
-            if let petitions = petitions {
-                self.output?.fetchPetitionsSuccess(petitionsList: petitions)
-            } else {
-                self.output?.fetchPetitionsFailure(error: error)
-            }
+    func filter(_ filter: String) {
+        if !filter.isEmpty {
+            let petitions = self.petitions.filter { $0.title.contains(filter) }
+            self.presenter.fetchPetitionsSuccess(petitionsList: petitions)
+            
+        } else {
+            self.presenter.fetchPetitionsSuccess(petitionsList: self.petitions)
         }
     }
 }

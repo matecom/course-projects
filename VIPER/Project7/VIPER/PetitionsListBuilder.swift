@@ -8,28 +8,18 @@
 import Foundation
 import UIKit
 
-final class PetitionsListBuilder {
-
-    class func build() -> PetitionsListRouter {
-        let router = PetitionsListRouterImplementation()
-        let repo = PetitionsRepoImplementation()
-        let interactor = PetitionsListInteractor(repo: repo)
-        let presenter = PetitionsListPresenterImplementation(router: router, interactor: interactor)
-        let view = PetitionsListViewController(presenter: presenter)
-
-        router.viewController = view
-        interactor.output = presenter
-        return router
-    }
+class PetitionsListBuilder {
     
-
-    
-
-//    func presentPostDetailScreen(from view: PostListViewProtocol, forPost post: PostModel) {
-//        let postDetailViewController = PostDetailWireFrame.createPostDetailModule(forPost: post)
-//   
-//        if let sourceView = view as? UIViewController {
-//           sourceView.navigationController?.pushViewController(postDetailViewController, animated: true)
-//        }
+//    static func build() -> PetitionsListRouterProtocol {
+//        let router = PetitionsListRouter()
+//        let repo = PetitionsRepo()
+//        let interactor = PetitionsListInteractor(repo: repo)
+//        let presenter = PetitionsListPresenter(router: router, interactor: interactor)
+//        let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+//        let vc = storyboard.instantiateViewController(identifier: "PetitionsListVCID") as! PetitionsListViewController
+//        vc.presenter  = presenter
+//        router.viewController = vc
+//        interactor.presenter = presenter
+//        return router
 //    }
 }

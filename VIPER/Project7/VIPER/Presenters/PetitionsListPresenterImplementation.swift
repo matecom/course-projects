@@ -6,31 +6,52 @@
 //
 
 import Foundation
+import UIKit
 
-class PetitionsListPresenterImplementation: PetitionsListPresenter{
+protocol PetitionsListInteractorPresenterProtocol {
+    func fetchPetitionsSuccess(petitionsList: [Petition])
+    func fetchPetitionsFailure()
+}
 
-    private var view: PetitionsListView?
-    private let router: PetitionsListRouter
-    private let interactor: PetitionsListInteractorInput
+protocol PetitionsListViewControllerPresenterProtocol {
+    func viewDidLoad()
+    func showDetails(_ petition: Petition)
+    func setFilter(_ filter: String)
+}
 
-    init(router: PetitionsListRouter, interactor: PetitionsListInteractor) {
-        self.router = router
-        self.interactor = interactor
-    }
 
-    func viewDidLoad(view: PetitionsListView) {
+class PetitionsListPresenter {
+
+    private let view: PetitionsListViewProtocol
+    private lazy var router: PetitionsListRouterProtocol = PetitionsListRouter(presenter: self)
+    private lazy var interactor: PetitionsListInteractorProtocol = PetitionsListInteractor(presenter: self)
+
+    init(view: PetitionsListViewProtocol) {
         self.view = view
-        // Fetch the list from the interactor
-        interactor.fetchPetitionsList()
+    }
+    
+}
+
+extension PetitionsListPresenter: PetitionsListInteractorPresenterProtocol {
+    func fetchPetitionsSuccess(petitionsList: [Petition]) {
+        self.view.show(petitionsList: petitionsList)
+    }
+    
+    func fetchPetitionsFailure() {
+        self.view.showError()
     }
 }
 
-extension PetitionsListPresenterImplementation: PetitionsListInteractorOutput {
-    func fetchPetitionsSuccess(petitionsList: [Petition]) {
-        self.view?.show(petitionsList: petitionsList)
+extension PetitionsListPresenter: PetitionsListViewControllerPresenterProtocol {
+    func setFilter(_ filter: String) {
+        self.interactor.filter(filter)
     }
     
-    func fetchPetitionsFailure(error: ApiError?) {
-        // show Error
+    func showDetails(_ petition: Petition) {
+        router.presentDetails(parentViewController: view as! UIViewController, petition: petition)
+    }
+    
+    func viewDidLoad() {
+        self.interactor.fetchPetitionsList()
     }
 }
