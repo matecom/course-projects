@@ -8,7 +8,7 @@
 import Foundation
 
 protocol PetitionsListInteractorProtocol {
-    func fetchPetitionsList()
+    func fetchPetitionsList(petitionsTag: Int)
     func filter(_ filter: String)
 }
 
@@ -24,8 +24,8 @@ class PetitionsListInteractor {
 }
 
 extension PetitionsListInteractor: PetitionsListInteractorProtocol {
-    func fetchPetitionsList() {
-        repo.fetchPetitionsList { petitions in
+    func fetchPetitionsList(petitionsTag: Int) {
+        repo.fetchPetitionsList(petitionsTag: petitionsTag) { petitions in
             if let petitions = petitions {
                 self.presenter.fetchPetitionsSuccess(petitionsList: petitions)
                 self.petitions = petitions

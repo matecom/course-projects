@@ -10,9 +10,18 @@ import UIKit
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     var window: UIWindow?
+    let storyboard = UIStoryboard(name: "Main", bundle: nil)
     
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-//        guard let windowScene = (scene as? UIWindowScene) else { return }
+        if let tabBarController = window?.rootViewController as? UITabBarController {
+            tabBarController.viewControllers?.append(getNavController(tabBarSystemItem: .topRated))
+        }
+    }
+    
+    func getNavController(tabBarSystemItem: UITabBarItem.SystemItem) -> UIViewController {
+        let vc = storyboard.instantiateViewController(withIdentifier: "NavController")
+        vc.tabBarItem = UITabBarItem(tabBarSystemItem: tabBarSystemItem, tag: tabBarSystemItem.rawValue)
+        return vc
     }
     
     func sceneDidDisconnect(_ scene: UIScene) {

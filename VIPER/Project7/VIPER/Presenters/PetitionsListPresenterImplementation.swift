@@ -14,7 +14,7 @@ protocol PetitionsListInteractorPresenterProtocol {
 }
 
 protocol PetitionsListViewControllerPresenterProtocol {
-    func viewDidLoad()
+    func viewDidLoad(petitionsTag: Int)
     func showDetails(_ petition: Petition)
     func setFilter(_ filter: String)
 }
@@ -51,7 +51,7 @@ extension PetitionsListPresenter: PetitionsListViewControllerPresenterProtocol {
         router.presentDetails(parentViewController: view as! UIViewController, petition: petition)
     }
     
-    func viewDidLoad() {
-        self.interactor.fetchPetitionsList()
+    func viewDidLoad(petitionsTag: Int) {
+        self.interactor.fetchPetitionsList(petitionsTag: petitionsTag)
     }
 }

@@ -8,20 +8,20 @@
 import Foundation
 
 protocol PetitionsRepoProtocol {
-    func fetchPetitionsList(completion: @escaping ([Petition]?) -> Void)
+    func fetchPetitionsList(petitionsTag: Int, completion: @escaping ([Petition]?) -> Void)
 }
 
 class PetitionsRepo: PetitionsRepoProtocol {
+    var urlString = ""
     
-    func fetchPetitionsList(completion: @escaping ([Petition]?) -> Void) {
-//        if navigationController?.tabBarItem.tag == 0 {
-//            urlString = "https://www.hackingwithswift.com/samples/petitions-1.json"
-//        } else {
-//            urlString = "https://www.hackingwithswift.com/samples/petitions-2.json"
-//        }
-        var urlString = "https://www.hackingwithswift.com/samples/petitions-1.json"
+    func fetchPetitionsList(petitionsTag: Int, completion: @escaping ([Petition]?) -> Void) {
+        if petitionsTag == 0 {
+            urlString = "https://www.hackingwithswift.com/samples/petitions-1.json"
+        } else {
+            urlString = "https://www.hackingwithswift.com/samples/petitions-2.json"
+        }
         DispatchQueue.global(qos: .userInitiated).async {
-            if let url = URL(string: urlString) {
+            if let url = URL(string: self.urlString) {
                 if let data = try? Data(contentsOf: url) {
                     guard let petitions = self.parse(json: data) else {
                         completion(nil)

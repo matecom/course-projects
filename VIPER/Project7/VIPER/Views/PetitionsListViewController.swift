@@ -21,7 +21,7 @@ class PetitionsListViewController: UITableViewController, PetitionsListViewProto
         super.viewDidLoad()
         title = "VIPER Project 7"
         presenter = PetitionsListPresenter(view: self)
-        presenter?.viewDidLoad()
+        presenter?.viewDidLoad(petitionsTag: navigationController?.tabBarItem.tag ?? 0)
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Credits", style: .plain, target: self, action: #selector(showCredit))
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Filtr", style: .plain, target: self, action: #selector(setFilter))
