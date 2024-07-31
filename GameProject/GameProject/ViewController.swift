@@ -70,7 +70,7 @@ class ViewController: UIViewController {
         }
         let finalMessage = questionsAsked >= maxQuestions ? "FINAL " : ""
         var message = "\(wrong)Your \(finalMessage)score is \(score)"
-        if questionsAsked >= maxQuestions  && score > highScore{
+        if questionsAsked >= maxQuestions  && score > highScore {
             message = "\(message)\nThis is your new high score!!!"
             highScore = score
             defaults.set(score, forKey: "HighScore")
