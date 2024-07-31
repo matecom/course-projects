@@ -17,11 +17,15 @@ class ViewController: UIViewController {
     var score = 0
     var correctAnswer = 0
     var questionsAsked = 0
+    var highScore = 0
     let maxQuestions = 10
+    let defaults = UserDefaults.standard
     let notificationID = "alarmGame"
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        highScore = defaults.object(forKey:"HighScore") as? Int ?? 0
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(showScore))
         
@@ -65,7 +69,12 @@ class ViewController: UIViewController {
             score -= 1
         }
         let finalMessage = questionsAsked >= maxQuestions ? "FINAL " : ""
-        let message = "\(wrong)Your \(finalMessage)score is \(score)"
+        var message = "\(wrong)Your \(finalMessage)score is \(score)"
+        if questionsAsked >= maxQuestions  && score > highScore{
+            message = "\(message)\nThis is your new high score!!!"
+            highScore = score
+            defaults.set(score, forKey: "HighScore")
+        }
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "Continue", style: questionsAsked < maxQuestions ? .default : .destructive, handler: askQuestion))
         present(alertController, animated: true)

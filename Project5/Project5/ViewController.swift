@@ -10,12 +10,13 @@ import UIKit
 class ViewController: UITableViewController {
     var allWords : [String] = []
     var usedWords : [String] = []
+    let defaults = UserDefaults.standard
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(promptForAnswer))
-        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(startGameTapped))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(resetGameTapped))
         
         if let startWordsURL = Bundle.main.url(forResource: "start", withExtension: "txt") {
             if let startWords = try? String(contentsOf: startWordsURL){
@@ -31,8 +32,22 @@ class ViewController: UITableViewController {
     }
     
     func startGame() {
+        title = defaults.object(forKey: "word") as? String ?? allWords.randomElement()
+        usedWords = defaults.object(forKey: "words") as? [String] ?? []
+        tableView.reloadData()
+        save()
+    }
+    
+    func resetGame() {
         title = allWords.randomElement()
         usedWords.removeAll(keepingCapacity: true)
+        tableView.reloadData()
+        save()
+    }
+    
+    func save() {
+        defaults.set(title, forKey: "word")
+        defaults.set(usedWords, forKey: "words")
         tableView.reloadData()
     }
     
@@ -89,10 +104,11 @@ class ViewController: UITableViewController {
         
         let indexPath = IndexPath(row: 0, section: 0)
         tableView.insertRows(at: [indexPath], with: .automatic)
+        defaults.set(usedWords, forKey: "words")
     }
     
-    @objc func startGameTapped(){
-        startGame()
+    @objc func resetGameTapped(){
+        resetGame()
     }
 }
 
