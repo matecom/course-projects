@@ -72,6 +72,8 @@ class ViewController: UIViewController {
         
         let buttonsView = UIView()
         buttonsView.translatesAutoresizingMaskIntoConstraints = false
+        buttonsView.layer.borderColor = UIColor.lightGray.cgColor
+        buttonsView.layer.borderWidth = 2.0
         view.addSubview(buttonsView)
         
         NSLayoutConstraint.activate([
@@ -133,10 +135,10 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        loadLevel()
+        performSelector(inBackground: #selector(loadLevel), with: nil)
     }
     
-    func loadLevel() {
+    @objc func loadLevel() {
         var clueString = ""
         var solutionString = ""
         var letterBits = [String]()
@@ -162,15 +164,18 @@ class ViewController: UIViewController {
                 }
             }
         }
-
-        cluesLabel.text = clueString.trimmingCharacters(in: .whitespacesAndNewlines)
-        answersLabel.text = solutionString.trimmingCharacters(in: .whitespacesAndNewlines)
-
+        
         letterBits.shuffle()
-
+        
+        DispatchQueue.main.async {
+            self.cluesLabel.text = clueString.trimmingCharacters(in: .whitespacesAndNewlines)
+            self.answersLabel.text = solutionString.trimmingCharacters(in: .whitespacesAndNewlines)
+        }
         if letterBits.count == letterButtons.count {
             for i in 0 ..< letterButtons.count {
-                letterButtons[i].setTitle(letterBits[i], for: .normal)
+                DispatchQueue.main.async {
+                    self.letterButtons[i].setTitle(letterBits[i], for: .normal)
+                }
             }
         }
     }
@@ -195,11 +200,16 @@ class ViewController: UIViewController {
             currentAnswer.text = ""
             score += 1
 
-            if score % 7 == 0 {
+            if letterButtons.filter({button in !button.isHidden}).count == 0 {
                 let ac = UIAlertController(title: "Well done!", message: "Are you ready for the next level?", preferredStyle: .alert)
                 ac.addAction(UIAlertAction(title: "Let's go!", style: .default, handler: levelUp))
                 present(ac, animated: true)
             }
+        } else {
+            let ac = UIAlertController(title: "Wrong!", message: "This word doesn't exist", preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "Ok", style: .default))
+            present(ac, animated: true)
+            score -= 1
         }
     }
 
@@ -217,7 +227,7 @@ class ViewController: UIViewController {
         level += 1
         solutions.removeAll(keepingCapacity: true)
 
-        loadLevel()
+        performSelector(inBackground: #selector(loadLevel), with: nil)
 
         for btn in letterButtons {
             btn.isHidden = false
