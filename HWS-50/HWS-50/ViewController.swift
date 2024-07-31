@@ -14,12 +14,14 @@ class ViewController: UITableViewController, UIImagePickerControllerDelegate, UI
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(openAddPrompt))
+        loadPhotos()
+    }
+    
+    func loadPhotos() {
         if let savedPhotos = defaults.object(forKey: "photos") as? Data {
             let jsonDecoder = JSONDecoder()
             do {
-                
                 photos = try jsonDecoder.decode([Photo].self, from: savedPhotos)
-                print(photos)
             } catch {
                 print("Failed to load photos")
             }
