@@ -13,6 +13,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     let storyboard = UIStoryboard(name: "Main", bundle: nil)
     
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
+        changeBackgroundColorForNavigationBar()
         if let tabBarController = window?.rootViewController as? UITabBarController {
             tabBarController.viewControllers?.append(getNavController(tabBarSystemItem: .topRated))
         }
@@ -52,6 +53,19 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // to restore the scene back to its current state.
     }
     
+    func changeBackgroundColorForNavigationBar() {
+        let navigationBarAppearance = UINavigationBarAppearance()
+                navigationBarAppearance.configureWithOpaqueBackground()
+                navigationBarAppearance.titleTextAttributes = [
+                    NSAttributedString.Key.foregroundColor : UIColor.white
+                ]
+                navigationBarAppearance.backgroundColor = .accent
+        
+                UINavigationBar.appearance().tintColor = .white
+                UINavigationBar.appearance().standardAppearance = navigationBarAppearance
+                UINavigationBar.appearance().compactAppearance = navigationBarAppearance
+                UINavigationBar.appearance().scrollEdgeAppearance = navigationBarAppearance
+    }
     
 }
 

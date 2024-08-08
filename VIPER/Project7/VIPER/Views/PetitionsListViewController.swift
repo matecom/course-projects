@@ -16,15 +16,26 @@ protocol PetitionsListViewProtocol {
 class PetitionsListViewController: UITableViewController, PetitionsListViewProtocol {
     private var presenter: PetitionsListViewControllerPresenterProtocol?
     private var petitions: [Petition] = []
+    private let searchController = UISearchController.init(searchResultsController: nil)
     
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "VIPER Project 7"
+        
+        searchController.view.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+        searchController.searchBar.barTintColor = .white
+        searchController.searchBar.tintColor = .white
+        searchController.searchBar.searchTextField.textColor = .white
+        searchController.searchBar.searchTextField.backgroundColor = .white
+        searchController.searchResultsUpdater = self
+        
+        navigationItem.searchController = searchController
+
         presenter = PetitionsListPresenter(view: self)
         presenter?.viewDidLoad(petitionsTag: navigationController?.tabBarItem.tag ?? 0)
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Credits", style: .plain, target: self, action: #selector(showCredit))
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Filtr", style: .plain, target: self, action: #selector(setFilter))
+        changeBackgroundColorForNavigationBar()
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -66,17 +77,26 @@ class PetitionsListViewController: UITableViewController, PetitionsListViewProto
         present(ac, animated: true)
     }
     
-    @objc func setFilter() {
-        let ac = UIAlertController(title: "Enter filter", message: nil, preferredStyle: .alert)
-        ac.addTextField()
+    func changeBackgroundColorForNavigationBar() {
+        let navigationBarAppearance = UINavigationBarAppearance()
+                navigationBarAppearance.configureWithOpaqueBackground()
+                navigationBarAppearance.titleTextAttributes = [
+                    NSAttributedString.Key.foregroundColor : UIColor.white
+                ]
+                navigationBarAppearance.backgroundColor = .accent
         
-        let submitAction = UIAlertAction(title: "Submit", style: .default) { [weak self, weak ac] action in
-            guard let filter = ac?.textFields?[0].text else { return }
-            DispatchQueue.global(qos: .userInitiated).async {
-                self?.presenter?.setFilter(filter)
-            }
-        }
-        ac.addAction(submitAction)
-        present(ac, animated: true)
+                UINavigationBar.appearance().tintColor = .white
+                UINavigationBar.appearance().standardAppearance = navigationBarAppearance
+                UINavigationBar.appearance().compactAppearance = navigationBarAppearance
+                UINavigationBar.appearance().scrollEdgeAppearance = navigationBarAppearance
     }
+}
+
+extension PetitionsListViewController: UISearchResultsUpdating {
+  func updateSearchResults(for searchController: UISearchController) {
+      guard let filter = searchController.searchBar.text else { return }
+      DispatchQueue.global(qos: .userInitiated).async {
+          self.presenter?.setFilter(filter)
+      }
+  }
 }
